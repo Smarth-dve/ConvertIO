@@ -7,11 +7,11 @@ import os
 r = sr.Recognizer()
 
 def startConvertion(path = 'AUD1.wav'):
-    with sr.AudioFile(path) as source:
-        print('Fetching File')
-        audio_text = r.record(source, duration=14)
-        # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
         try:
+            with sr.AudioFile(path) as source:
+                print('Fetching File')
+                audio_text = r.record(source, duration=14)
+        # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
         
             # using google speech recognition
             print('Converting audio transcripts into text ...')
@@ -30,6 +30,13 @@ def startConvertion(path = 'AUD1.wav'):
             os.system("start TTSOutput.mp3")
 
         except :
-            print('Sorry.. run again...')
+            # print('Sorry.. run again...')
+            myText = '''Sorry We didn't get that'''
+            language = 'en'
+            output = gTTS(text = myText, lang = language, tld="ca",slow = False)
+
+            output.save("TTSOutput.mp3")
+
+            os.system("start TTSOutput.mp3")
 
 startConvertion('MyRecording.wav')
