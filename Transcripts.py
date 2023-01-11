@@ -5,6 +5,8 @@ import pydub
 from pydub.playback import play
 import pytube  
 from pytube import YouTube
+# from translate import Translator
+from deep_translator import GoogleTranslator
 
 AudioSegment.ffmpeg = "C:\\ffmpeg\\bin\\ffmpeg.exe"
 
@@ -14,6 +16,8 @@ try:
     vidid = pytube.YouTube(video_url).video_id
 
     audio_out = "finalout.wav"
+
+    # translator= Translator(from_lang="English", to_lang="French")
 
     mylist = YouTubeTranscriptApi.get_transcript(vidid)
 
@@ -25,13 +29,13 @@ try:
 
     audio_out = startsegment
 
-    language = 'pt'
+    language = 'fr'
     for i in range(length):
         txt = (mylist[i]['text'])
         due = (mylist[i]['duration'])
-        myText = txt
+        myText = GoogleTranslator(source='auto', target='fr').translate(txt)
         filename = '.\\ttsout.wav'
-        tts = gTTS(text = myText, lang = language, tld = 'com.br', slow = False)
+        tts = gTTS(text = myText, lang = language, tld = 'ca', slow = False)
         tts.save('ttsout.wav')
         aud1 = AudioSegment.from_file(filename)
         aud2 = AudioSegment.silent(duration=(due)*1000)
